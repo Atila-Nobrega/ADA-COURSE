@@ -7,8 +7,8 @@ function saveLocal(lista) {
   }
 
   function savePage() {
-    const ul = [...document.querySelector("ul").children];
-    const lista = getData(ul);
+    const spanlist = document.querySelectorAll("li span");
+    const lista = getData(spanlist);
     localStorage.setItem("@todo", JSON.stringify(lista));
     criaLista(getLocal())
   }
@@ -16,7 +16,7 @@ function saveLocal(lista) {
   function getData(el) {
       let data = []
     el.forEach((item) => {
-        if (data.filter(el => el.text === item.textContent).length === 0 && item.textContent != "") {
+        if (data.find(el => el.text === item.textContent) === undefined && item.textContent != "") {
             data.push({"text": item.textContent})
         }
 
@@ -38,6 +38,7 @@ function saveLocal(lista) {
       button.style.background = "red";
       button.style.padding = "10px";
       button.style.margin = "5px";
+      button.innerText = "X"
       span.style.fontSize = "20px";
       //!!
 
@@ -68,18 +69,20 @@ function saveLocal(lista) {
     textoEl.value = "";
   }
 
-  var saveButton = document.getElementById('save')
-  var loadButton = document.getElementById('load')
-
-  saveButton.addEventListener('click', function() {
-    savePage();
-  }, false);
-  
-  loadButton.addEventListener('click', function() {
-    const lista = getLocal();
-    criaLista(lista);
-  }, false);
   
   window.onload = () => {
+      const saveButton = document.getElementById('save')
+      const loadButton = document.getElementById('load')
+    
+      saveButton.addEventListener('click', function() {
+        savePage();
+      }, false);
+      
+      loadButton.addEventListener('click', function() {
+        const lista = getLocal();
+        criaLista(lista);
+      }, false);
+
+
     criaLista(getLocal());
   };
